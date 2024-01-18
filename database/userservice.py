@@ -24,7 +24,7 @@ def get_exact_user_db(user_id):
 
 
 # Добавить пользователя
-def add_new_user_db(name, surname, email, password, city, phone_number, birthday, reg_date):
+def add_new_user_db(name, surname, email, password, city, phone_number):
     db = next(get_db())
 
     checker = db.query(User).filter_by(phone_number=phone_number).first()
@@ -34,8 +34,8 @@ def add_new_user_db(name, surname, email, password, city, phone_number, birthday
 
     else:
         new_user = User(name=name, surname=surname, email=email, password=password,
-                        city=city, phone_number=phone_number, birthday=birthday,
-                        reg_date=reg_date)
+                        city=city, phone_number=phone_number,
+                       )
         db.add(new_user)
         db.commit()
 
@@ -46,12 +46,15 @@ def add_new_user_db(name, surname, email, password, city, phone_number, birthday
 def login_user_db(phone_number, password):
     db = next(get_db())
 
-    user = db.query(User).filter(phone_number=phone_number, password=password).first()
+    checker = db.query(User).filter_by(phone_number=phone_number).first()
 
-    if user:
-        return user
+    if checker:
+        if checker.password == password:
+            return checker
+        elif checker.password != password:
+            return 'Неверный пароль'
     else:
-        return "Ошибка авторизации"
+        return "Ошибка в данных"
 
 # Изменить информацию о пользователе
 def edit_user_info_db(user_id, edit_info, new_info):

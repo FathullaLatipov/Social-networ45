@@ -14,6 +14,7 @@ class User(Base):
     phone_number = Column(Integer, unique=True)
     city = Column(String)
     birthday = Column(Date)
+    password = Column(String)
     profile_photo = Column(String)
 
     reg_date = Column(DateTime)
@@ -48,7 +49,7 @@ class PostComment(Base):
     comment_id = Column(Integer, autoincrement=True, primary_key=True)
 
     post_id = Column(Integer, ForeignKey("user_posts.post_id"))
-    user_id = Column(Integer, ForeignKey("users_user_id"))
+    user_id = Column(Integer, ForeignKey("users.user_id"))
 
     comment_text = Column(String)
     publish_date = Column(DateTime)
